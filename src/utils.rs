@@ -1,4 +1,5 @@
 use chrono::{Duration,DateTime,Utc,FixedOffset,TimeZone,Datelike};
+use rust_decimal::prelude::*;
 
 
 pub fn compute(active_client_predictions: &[CalcManagerPrediction], bonus_configurations: &BcsBonus) -> f64 {
@@ -56,7 +57,10 @@ fn is_prediction_date_valid_for_bonus(
 
 fn total_odd_without_bonus(predictions: &[CalcManagerPrediction]) -> f64 {
     predictions.iter().fold(1.0, |total, prediction| {
-        total * (prediction.odd as f64 / 100.0)
+        let odd = Decimal::from_f64(prediction.odd as f64).unwrap();
+        let cent =  Decimal::from_f64(0.01_f64).unwrap();
+        let tot = Decimal::from_f64(total).unwrap();
+        (tot * odd * cent).to_f64().unwrap()
     })
 }
 
