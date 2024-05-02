@@ -1,30 +1,36 @@
 mod utils;
-use chrono::{DateTime,Utc};
-use utils::{get_date_after_days,to_fixed_trunc,CalcManagerPrediction};
+use utils::{CalcManagerPrediction, BcsBonus};
 
 fn main() {
     
-    let date1 = get_date_after_days(064);
-    let date_str = "2024-04-30T09:00:00Z";
-    let date_time = DateTime::parse_from_rfc3339(date_str).unwrap();
+  
 
-    if date1 < date_time{
-        println!("La data {} è minore di {}", date1,date_time);
-    } else if date1 > date_time {
-        println!("La data {} è maggiore di {}", date1,date_time);
-    } else {
-        println!("Le date sono uguali");
-    }
+        let predictions: Vec<CalcManagerPrediction> = vec![
+        CalcManagerPrediction {
+            event_timestamp: "2024-04-17T16:30:00Z".to_string(),
+            odd: 640,
+            status: 1,
+        }, CalcManagerPrediction {
+            event_timestamp: "2024-04-17T16:30:00Z".to_string(),
+            odd: 750,
+            status: 1,
+        },
+         CalcManagerPrediction {
+            event_timestamp: "2024-04-17T16:30:00Z".to_string(),
+            odd: 380,
+            status: 1,
+        }
+    ];
 
-    let num = to_fixed_trunc(1.23456789,6);
-
-    let prediction = CalcManagerPrediction {
-        event_timestamp: "2024-04-30T10:54:00".to_string(),
-        odd: 2.5,
-        status: 1
+        let bcs_bonus = BcsBonus {
+        bonus_expiration_days: 7,
+        bonus_min_num_outcomes: 5,
+        bonus_min_odd: 124,
+        bonus_percentage: 104.0,
+        cardinality: 0,
     };
 
-    println!("{}",num);
-    println!("{:.?}",prediction);
+       let result = utils::compute(&predictions, &bcs_bonus);
+       println!("{}", result);
 
 }
