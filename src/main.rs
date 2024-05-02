@@ -30,6 +30,7 @@ async fn totalodd(body: web::Json<RequestBody>) -> impl Responder {
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
+    println!("Starting web service: /totalodd");
     HttpServer::new(|| {
         App::new()
             .data(web::JsonConfig::default().limit(4096))
