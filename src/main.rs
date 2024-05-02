@@ -1,57 +1,41 @@
-mod utils;
-use utils::{CalcManagerPrediction, BcsBonus};
-use rust_decimal::prelude::*;
+use actix_web::{web, App, HttpServer, Responder};
+use serde::{Deserialize, Serialize};
 
-fn main() {
-    
- 
-        let predictions: Vec<CalcManagerPrediction> = vec![
-        CalcManagerPrediction {
-            event_timestamp: "2024-05-03T16:30:00Z".to_string(),
-            odd: 500,
-            status: 1,
-        }, CalcManagerPrediction {
-            event_timestamp: "2024-05-03T16:30:00Z".to_string(),
-            odd: 335,
-            status: 1,
-        },
-         CalcManagerPrediction {
-            event_timestamp: "2024-05-03T16:30:00Z".to_string(),
-            odd: 475,
-            status: 1,
-        },
-         CalcManagerPrediction {
-            event_timestamp: "2024-05-03T16:30:00Z".to_string(),
-            odd: 206,
-            status: 1,
-        },
-         CalcManagerPrediction {
-            event_timestamp: "2024-05-03T16:30:00Z".to_string(),
-            odd: 300,
-            status: 1,
-        },
-         CalcManagerPrediction {
-            event_timestamp: "2024-05-03T16:30:00Z".to_string(),
-            odd: 400,
-            status: 1,
-        },
-          CalcManagerPrediction {
-            event_timestamp: "2024-05-03T16:30:00Z".to_string(),
-            odd: 299,
-            status: 1,
-        }
-    ];
+#[derive(Deserialize)]
+struct RequestBody {
+    predictions: Vec<f64>,
+    bcs_bonus: f64,
+}
 
-        let bcs_bonus = BcsBonus {
-        bonus_expiration_days: 7,
-        bonus_min_num_outcomes: 5,
-        bonus_min_odd: 124,
-        bonus_percentage: 104.0,
-        cardinality: 0,
-    };
+#[derive(Serialize)]
+struct ResponseBody {
+    code: i32,
+    result: f64,
+    message: String,
+}
 
-       let result = utils::compute(&predictions, &bcs_bonus);
+async fn totalodd(body: web::Json<RequestBody>) -> impl Responder {
+    let predictions = &body.predictions;
+    let bcs_bonus = body.bcs_bonus;
 
-       println!("{}", result);
+    // Calcola il risultato (sostituisci con la tua logica)
+    let result = predictions.iter().sum::<f64>() + bcs_bonus;
 
+    web::Json(ResponseBody {
+        code: 0,
+        result,
+        message: "success".to_string(),
+    })
+}
+
+#[actix_rt::main]
+async fn main() -> std::io::Result<()> {
+    HttpServer::new(|| {
+        App::new()
+            .data(web::JsonConfig::default().limit(4096))
+            .route("/totalodd", web::post().to(totalodd))
+    })
+    .bind("127.0.0.1:3000")?
+    .run()
+    .await
 }
