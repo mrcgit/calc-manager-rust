@@ -1,5 +1,5 @@
 [package]
-name = "calc-manager-rust"
+name = "calc_manager_rust"
 version = "1.0.0"
 edition = "2021"
 
