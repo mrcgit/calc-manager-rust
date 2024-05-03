@@ -38,7 +38,7 @@ async fn main() -> std::io::Result<()> {
             .data(web::JsonConfig::default().limit(4096))
             .route("/totalodd", web::post().to(totalodd))
     })
-    .bind("0.0.0.0:0:3000")?
+    .bind("0.0.0.0:3000")?
     .run()
     .await
 }
