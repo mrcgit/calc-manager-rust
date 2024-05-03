@@ -1,5 +1,6 @@
 use chrono::{Duration,DateTime,Utc,FixedOffset,TimeZone,Datelike};
 use rust_decimal::prelude::*;
+use serde::Serialize;
 
 
 pub fn compute(active_client_predictions: &[CalcManagerPrediction], bonus_configurations: &BcsBonus) -> f64 {
@@ -81,13 +82,13 @@ pub fn truncate_number_to(value:f64, decimals: usize)->f64{
     truncated_value
 }
 
-#[derive(Debug)]
+#[derive(Serialize)]
 pub struct CalcManagerPrediction {
     pub event_timestamp: String,
     pub odd: i32,
     pub status: i32,
 }
-#[derive(Debug)]
+#[derive(Serialize)]
 pub struct BcsBonus {
     pub cardinality: i32,
     pub bonus_percentage: f64,
