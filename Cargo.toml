@@ -9,6 +9,17 @@ edition = "2021"
 chrono = "0.4.38"
 rust_decimal = "1.34.2"
 rust_decimal_macros = "1.34.2"
-actix-web = "4.5.0"
+
+
+actix-codec = "0.5"
+actix-macros = { version = "0.2.3", optional = true }
+actix-rt = { version = "2.6", default-features = false }
+actix-server = "2"
+actix-service = "2"
+actix-utils = "3"
+
+actix-http = { version = "3.6", features = ["ws"] }
+actix-router = { version = "0.5", default-features = false, features = ["http"] }
+
+
 serde = {version = "1.0.104", features = ["derive"]}
-actix-rt ="2.9.0"
