@@ -82,13 +82,13 @@ pub fn truncate_number_to(value:f64, decimals: usize)->f64{
     truncated_value
 }
 
-#[derive(Serialize)]
+#[derive(Deserialize)]
 pub struct CalcManagerPrediction {
     pub event_timestamp: String,
     pub odd: i32,
     pub status: i32,
 }
-#[derive(Serialize)]
+#[derive(Deserialize)]
 pub struct BcsBonus {
     pub cardinality: i32,
     pub bonus_percentage: f64,
