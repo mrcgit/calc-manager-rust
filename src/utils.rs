@@ -1,6 +1,6 @@
 use chrono::{Duration,DateTime,Utc,FixedOffset,TimeZone,Datelike};
 use rust_decimal::prelude::*;
-use serde::Serialize;
+use serde::Deserialize;
 
 
 pub fn compute(active_client_predictions: &[CalcManagerPrediction], bonus_configurations: &BcsBonus) -> f64 {
