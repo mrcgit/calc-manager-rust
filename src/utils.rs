@@ -5,26 +5,26 @@ use serde::Deserialize;
 
 pub fn compute(active_client_predictions: &[CalcManagerPrediction], bonus_configurations: &BcsBonus) -> f64 {
     let total_odd_no_bonus = total_odd_without_bonus(active_client_predictions);
-    let bonus_percentage = compute_bonus(active_client_predictions, bonus_configurations);
-    truncate_number_to(bonus_percentage * total_odd_no_bonus, 6)
+    let bonusPercentage = compute_bonus(active_client_predictions, bonus_configurations);
+    truncate_number_to(bonusPercentage * total_odd_no_bonus, 6)
 }
 
 fn compute_bonus(predictions: &[CalcManagerPrediction], config_ticket: &BcsBonus) -> f64 {
-    if config_ticket.bonus_expiration_days <= 0 {
+    if config_ticket.bonusExpirationDays <= 0 {
         return 1.0;
     }
 
     let valid_predictions: Vec<_> = predictions
         .iter()
-        .filter(|&prediction| prediction.odd > config_ticket.bonus_min_odd)
+        .filter(|&prediction| prediction.odd > config_ticket.bonusMinOdd)
         .collect();
 
-    if valid_predictions.len() < config_ticket.bonus_min_num_outcomes as usize {
+    if valid_predictions.len() < config_ticket.bonusMinNumOutcomes as usize {
         return 1.0;
     }
 
-    let date_to_compare = get_date_after_days(config_ticket.bonus_expiration_days);
-    let num_outcomes = valid_predictions.len() as i64 - config_ticket.bonus_min_num_outcomes as i64 + 1;
+    let date_to_compare = get_date_after_days(config_ticket.bonusExpirationDays);
+    let num_outcomes = valid_predictions.len() as i64 - config_ticket.bonusMinNumOutcomes as i64 + 1;
 
     if let Some(_first_not_valid_for_date) =
         get_first_prediction_not_valid_for_date(predictions, date_to_compare)
@@ -32,7 +32,7 @@ fn compute_bonus(predictions: &[CalcManagerPrediction], config_ticket: &BcsBonus
         return 1.0;
     }
 
-    let bonus_factor = (config_ticket.bonus_percentage / 100.0).powi(num_outcomes as i32);
+    let bonus_factor = (config_ticket.bonusPercentage / 100.0).powi(num_outcomes as i32);
     bonus_factor
 }
 
@@ -91,10 +91,10 @@ pub struct CalcManagerPrediction {
 #[derive(Deserialize)]
 pub struct BcsBonus {
     pub cardinality: i32,
-    pub bonus_percentage: f64,
-    pub bonus_min_num_outcomes: i32,
-    pub bonus_min_odd: i32,
-    pub bonus_expiration_days: i64,
+    pub bonusPercentage: f64,
+    pub bonusMinNumOutcomes: i32,
+    pub bonusMinOdd: i32,
+    pub bonusExpirationDays: i64,
 }
 
 
