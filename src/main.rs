@@ -1,6 +1,6 @@
 use actix_web::{web, App, HttpServer, Responder};
 use serde::{Deserialize, Serialize};
-use utis::{CalcManagerPrediction, BcsBonus};
+use utis::{CalcManagerPrediction, BcsBonus, compute};
 
 #[derive(Deserialize)]
 struct RequestBody {
@@ -19,8 +19,7 @@ async fn totalodd(body: web::Json<RequestBody>) -> impl Responder {
     let predictions = &body.predictions;
     let bcsBonus = body.bcsBonus;
 
-    // Calcola il risultato (sostituisci con la tua logica)
-    let result = predictions.iter().sum::<f64>() + bcsBonus;
+    let result = compute(&predictions, &bcsBonus);
 
     web::Json(ResponseBody {
         code: 0,
