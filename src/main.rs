@@ -1,6 +1,6 @@
 use actix_web::{web, App, HttpServer, Responder};
 use serde::{Deserialize, Serialize};
-use utis::{CalcManagerPrediction, BcsBonus, compute};
+use utils::{CalcManagerPrediction, BcsBonus, compute};
 
 #[derive(Deserialize)]
 struct RequestBody {
