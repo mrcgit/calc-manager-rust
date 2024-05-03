@@ -19,7 +19,7 @@ struct ResponseBody {
 
 async fn totalodd(body: web::Json<RequestBody>) -> impl Responder {
     let predictions = &body.predictions;
-    let bcsBonus = body.bcsBonus;
+    let bcsBonus = &body.bcsBonus;
 
     let result = compute(&predictions, &bcsBonus);
 
