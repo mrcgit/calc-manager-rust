@@ -43,7 +43,7 @@ fn get_first_prediction_not_valid_for_date(
     predictions
         .iter()
         .find(|&prediction| !is_prediction_date_valid_for_bonus(
-            &prediction.event_timestamp,
+            &prediction.eventTimestamp,
             bonus_expiration_date,
         ))
 }
@@ -84,7 +84,7 @@ pub fn truncate_number_to(value:f64, decimals: usize)->f64{
 
 #[derive(Deserialize)]
 pub struct CalcManagerPrediction {
-    pub event_timestamp: String,
+    pub eventTimestamp: String,
     pub odd: i32,
     pub status: i32,
 }
