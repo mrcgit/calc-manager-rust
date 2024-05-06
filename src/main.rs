@@ -35,7 +35,7 @@ async fn main() -> std::io::Result<()> {
     println!("Starting web service: /totalodd");
     HttpServer::new(|| {
         App::new()
-            .data(web::JsonConfig::default().limit(4096))
+            .data(web::JsonConfig::default().limit(10000))
             .route("/totalodd", web::post().to(totalodd))
     })
     .bind("0.0.0.0:3000")?
