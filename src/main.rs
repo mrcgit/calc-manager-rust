@@ -28,9 +28,8 @@ async fn totalodd(body: web::Json<RequestBody>) -> impl Responder {
             message: "success".to_string(),
         }),
         Err(err) => {
-            // Handle the error
             let error_message = format!("Error: {}", err);
-            HttpResponse::InternalServerError().json(ResponseBody {
+            web::HttpResponse::InternalServerError().json(ResponseBody {
                 code: 1,
                 result: 0.0,
                 message: error_message,
