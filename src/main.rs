@@ -1,8 +1,7 @@
-use actix_web::{web, App, HttpServer, Responder};
+use actix_web::{web, App, HttpServer, Responder, HttpResponse};
 use serde::{Deserialize, Serialize};
 mod utils;
 use utils::{CalcManagerPrediction, BcsBonus, compute};
-
 
 #[derive(Deserialize)]
 struct RequestBody {
@@ -21,13 +20,23 @@ async fn totalodd(body: web::Json<RequestBody>) -> impl Responder {
     let predictions = &body.predictions;
     let bcsBonus = &body.bcsBonus;
 
-    let result = compute(&predictions, &bcsBonus);
-
-    web::Json(ResponseBody {
-        code: 0,
-        result,
-        message: "success".to_string(),
-    })
+    // Calculate the result
+    match compute(&predictions, &bcsBonus) {
+        Ok(result) => web::Json(ResponseBody {
+            code: 0,
+            result,
+            message: "success".to_string(),
+        }),
+        Err(err) => {
+            // Handle the error
+            let error_message = format!("Error: {}", err);
+            HttpResponse::InternalServerError().json(ResponseBody {
+                code: 1,
+                result: 0.0,
+                message: error_message,
+            })
+        }
+    }
 }
 
 #[actix_rt::main]
