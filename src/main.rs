@@ -19,23 +19,13 @@ struct ResponseBody {
 async fn totalodd(body: web::Json<RequestBody>) -> impl Responder {
     let predictions = &body.predictions;
     let bcsBonus = &body.bcsBonus;
+    let result = compute(&predictions, &bcsBonus);
 
-    // Calculate the result
-    match compute(&predictions, &bcsBonus) {
-        Ok(result) => web::Json(ResponseBody {
-            code: 0,
-            result,
-            message: "success".to_string(),
-        }),
-        Err(err) => {
-            let error_message = format!("Error: {}", err);
-            web::Json(ResponseBodyResponseBody {
-                code: 1,
-                result: 0.0,
-                message: error_message,
-            })
-        }
-    }
+    web::Json(ResponseBody {
+        code: 0,
+        result,
+        message: "success".to_string(),
+    })
 }
 
 #[actix_rt::main]

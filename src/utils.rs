@@ -3,11 +3,11 @@ use rust_decimal::prelude::*;
 use serde::Deserialize;
 
 
-pub fn compute(active_client_predictions: &[CalcManagerPrediction], bonus_configurations: &BcsBonus) -> Result<f64, Box<dyn std::error::Error>> {
+pub fn compute(active_client_predictions: &[CalcManagerPrediction], bonus_configurations: &BcsBonus) -> f64 {
     let total_odd_no_bonus = total_odd_without_bonus(active_client_predictions);
     let bonusPercentage = compute_bonus(active_client_predictions, bonus_configurations);
     let truncated_value = truncate_number_to(bonusPercentage * total_odd_no_bonus, 6);
-    Ok(truncated_value)
+    truncated_value
 }
 
 fn compute_bonus(predictions: &[CalcManagerPrediction], config_ticket: &BcsBonus) -> f64 {
