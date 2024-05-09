@@ -3,7 +3,7 @@ use rust_decimal::prelude::*;
 use serde::Deserialize;
 
 
-pub fn compute(active_client_predictions: &[CalcManagerPrediction], bonus_configurations: &BcsBonus) -> Result<Ok,Err> {
+pub fn compute(active_client_predictions: &[CalcManagerPrediction], bonus_configurations: &BcsBonus) -> Result<f64,String> {
     let total_odd_no_bonus = total_odd_without_bonus(active_client_predictions);
     let bonusPercentage = compute_bonus(active_client_predictions, bonus_configurations);
     let truncated_value = truncate_number_to(bonusPercentage * total_odd_no_bonus, 6);
