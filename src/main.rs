@@ -30,8 +30,8 @@ async fn totalodd(body: web::Json<RequestBody>) -> impl Responder {
         }),
         Err(err) => {
             // Restituisci un errore HTTP 500 con il messaggio di errore
-            HttpResponse::InternalServerError().json(ResponseBody {
-                code: 500,
+            web::Json(ResponseBody {
+                code: 1,
                 result: 0.0,
                 message: err.to_string(),
             })
