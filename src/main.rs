@@ -21,11 +21,22 @@ async fn totalodd(body: web::Json<RequestBody>) -> impl Responder {
     let bcsBonus = &body.bcsBonus;
     let result = compute(&predictions, &bcsBonus);
 
-    web::Json(ResponseBody {
-        code: 0,
-        result,
-        message: "success".to_string(),
-    })
+    // Restituisci un Result con il risultato o l'errore
+    match result {
+        Ok(result_value) => web::Json(ResponseBody {
+            code: 0,
+            result: result_value,
+            message: "success".to_string(),
+        }),
+        Err(err) => {
+            // Restituisci un errore HTTP 500 con il messaggio di errore
+            HttpResponse::InternalServerError().json(ResponseBody {
+                code: 500,
+                result: 0.0,
+                message: err.to_string(),
+            })
+        }
+    }
 }
 
 #[actix_rt::main]
